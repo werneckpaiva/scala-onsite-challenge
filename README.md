@@ -21,3 +21,8 @@ This code is generated using `spray` template project from branch `on_spray-can_
 5. Stop the application:
 
         > re-stop
+
+
+## Performance Testing
+
+Run the script `test.sh` in the `performance_testing` folder.
