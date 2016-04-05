@@ -30,5 +30,9 @@ trait MyService extends HttpService {
           complete { s"Hey $auction_id and $ip $bundle_name $connection_type"}
         }
       }
+    } ~ path("winner" / Segment) { auction_id =>
+      get {
+        complete { s"winner is $auction_id"}
+      }
     }
 }
