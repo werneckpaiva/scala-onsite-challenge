@@ -27,12 +27,16 @@ trait MyService extends HttpService {
     path("bid_request") {
       get {
         parameters('auction_id, 'ip, 'bundle_name, 'connection_type) { (auction_id, ip, bundle_name, connection_type) =>
-          complete { s"Hey $auction_id and $ip $bundle_name $connection_type"}
+          complete {
+            s"Hey $auction_id and $ip $bundle_name $connection_type"
+          }
         }
       }
     } ~ path("winner" / Segment) { auction_id =>
       get {
-        complete { s"winner is $auction_id"}
+        complete {
+          s"Winner is $auction_id"
+        }
       }
     }
 }
