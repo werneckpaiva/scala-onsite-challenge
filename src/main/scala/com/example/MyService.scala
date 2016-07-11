@@ -23,19 +23,27 @@ class MyServiceActor extends Actor with MyService {
 // this trait defines our service behavior independently from the service actor
 trait MyService extends HttpService {
 
+  val requirements = CampaignRequirements.loadFromFile("/Users/ricardo/Projects/Sandbox/scala/workspace/scala-onsite-challenge/src/main/resources/my_dsp.csv")
+  println(requirements)
+//  val requirements = new CampaignRequirements(Set("WiFi"), Set("com.whatsapp"))
+  val dsp = new MyDSP(budget=150000, requirements=requirements, rateLimit=10)
+
   val myRoute =
     path("bid_request") {
       get {
         parameters('auction_id, 'ip, 'bundle_name, 'connection_type) { (auction_id, ip, bundle_name, connection_type) =>
           complete {
-            s"Hey $auction_id and $ip $bundle_name $connection_type"
+            val bidRequest = BidRequest(auction_id, ip, bundle_name, connection_type)
+            val bidResponse = dsp.requestBid(bidRequest)
+            bidResponse.toJson()
           }
         }
       }
     } ~ path("winner" / Segment) { auction_id =>
       get {
         complete {
-          s"Winner is $auction_id"
+          dsp.notifyWinning(auction_id)
+          ""
         }
       }
     }
