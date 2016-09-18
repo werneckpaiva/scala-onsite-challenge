@@ -4,6 +4,7 @@ import akka.actor.Actor
 import spray.routing._
 import spray.http._
 import MediaTypes._
+import com.example.dsp.{BidRequest, CampaignRequirements, MyDSP}
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
@@ -24,8 +25,6 @@ class MyServiceActor extends Actor with MyService {
 trait MyService extends HttpService {
 
   val requirements = CampaignRequirements.loadFromFile("/Users/ricardo/Projects/Sandbox/scala/workspace/scala-onsite-challenge/src/main/resources/my_dsp.csv")
-  println(requirements)
-//  val requirements = new CampaignRequirements(Set("WiFi"), Set("com.whatsapp"))
   val dsp = new MyDSP(budget=150000, requirements=requirements, rateLimit=10)
 
   val myRoute =
